@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Simple Page</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #f0f0f0;
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+
+    .box {
+      background: white;
+      padding: 40px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      text-align: center;
+      position: absolute;
+      transition: left 0.3s ease, top 0.3s ease;
+    }
+
+    button {
+      margin: 10px;
+      padding: 10px 24px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="box" id="box">
+    <p>Ana Fiúza fazes o obséquio de sair comigo sexta-feira?</p>
+    <button onclick="window.location.href='other-page.html'">Claro que sim meu amor ❤️</button>
+    <button id="btn2">Não :(</button>
+  </div>
+
+  <script>
+    const box = document.getElementById('box');
+    const btn2 = document.getElementById('btn2');
+
+    // Center the box initially
+    box.style.left = (window.innerWidth / 2 - box.offsetWidth / 2) + 'px';
+    box.style.top = (window.innerHeight / 2 - box.offsetHeight / 2) + 'px';
+
+    document.addEventListener('mousemove', (e) => {
+      const rect = btn2.getBoundingClientRect();
+      const btnCenterX = rect.left + rect.width / 2;
+      const btnCenterY = rect.top + rect.height / 2;
+
+      const dx = e.clientX - btnCenterX;
+      const dy = e.clientY - btnCenterY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < 80) {
+        // Push the box away from the mouse
+        const angle = Math.atan2(dy, dx);
+        const pushDist = 200;
+
+        let newLeft = box.offsetLeft - Math.cos(angle) * pushDist;
+        let newTop  = box.offsetTop  - Math.sin(angle) * pushDist;
+
+        // Keep box within viewport
+        newLeft = Math.max(0, Math.min(window.innerWidth  - box.offsetWidth,  newLeft));
+        newTop  = Math.max(0, Math.min(window.innerHeight - box.offsetHeight, newTop));
+
+        box.style.left = newLeft + 'px';
+        box.style.top  = newTop  + 'px';
+      }
+    });
+  </script>
+</body>
+</html>
